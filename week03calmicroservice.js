@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const winston = require('winston');
-
+/* express - imports the express framework
+winston - imports the winston library for logging */
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
@@ -17,8 +18,15 @@ if (process.env.NODE_ENV !== 'production') {
         format: winston.format.simple(),
     }));
 }
+/* level - sets the logging level(info and error)
+    format - logs in JSON format for easier parsing
+    transports - configures output to files:
+            error.log - logs only errors
+            combined.log - logs all messages
+    console transport - logs to the console in non-production environments */
 
 const add = (n1, n2) => n1 + n2;
+/* A simple function that takes two parameters and returns their sum */
 
 app.get("/add", (req, res) => {
     try {
@@ -42,8 +50,16 @@ app.get("/add", (req, res) => {
         res.status(500).json({ statuscode: 500, msg: error.toString() });
     }
 });
+/* n1 - first number
+    n2- second number
+
+    validation - if n1 or n2 are not numbers, an error is logged and a 500 status is returned
+    Addition - If valid, the two numbers are added and the result is logged and returned
+    */
 
 const port = 3040;
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
+/* The server listens on port 3040. Upon Startup, a message is displayed in the console */
+/* This microservice is designed to accept two numeric parameters, validate the input, perform addition, return JSON responses and log activity and errors using winston */
